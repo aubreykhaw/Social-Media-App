@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href = "{{ url_for('static', filename='style.css')}}">
+        <title>login</title>
+    </head>
+    <body>
+       <form method = "POST" action="{{url_for('login')}}">
+            <h1>What is your username?</h1>
+            <input name="username" required>
+            <h1>What is your password?</h1>
+            <input name="password" required>
+            <button type="submit">submit </button>
+       </form>
+       <!-- if the login is successful, print login successful 
+       if not, print try again  -->
+       <!-- Username tells us username doesnt exist 
+       Password tells us password is wrong 
+       Print wrong password if Username is true and Password is False -->
+
+       {% if Login == True %}
+        <p>Succesful! </p>
+       {%endif%}
+
+       {% if Username == True and Password == False %}
+        <p>Wrong Password! </p>
+       {%endif%}
+        
+       {% if Username == False %}
+        <p>Username does not exsit! </p>
+        {%endif%}
+    </body>
+</html>

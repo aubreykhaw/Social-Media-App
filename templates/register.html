@@ -1,0 +1,24 @@
+<!-- textbox -> user types in username -> this becomes their username 
+password -> generated (app.py) -> actual password
+redirect the user to the log-in screen  -->
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href = "{{ url_for('static', filename='style.css')}}">
+        <title>Register Page</title>
+    </head>
+    <body>
+       <form method = "POST" action="{{url_for('register')}}">
+            <h1>What is your username?</h1>
+            <input name="username" required>
+            <h1>Are you an admin?(yes/no)</h1>
+            <input name="admin" required>
+            <button type="submit">submit </button>
+       </form>
+       <p>Password:<span class = "password"> {{ password }} </span></p>
+       <p>Username:<span class = "username"> {{ username }}</span></p>
+       <p>Admin:<span class = "admin"> {{ admin }}</span></p>
+    </body>
+</html>

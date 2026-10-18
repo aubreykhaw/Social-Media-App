@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href = "{{ url_for('static', filename='style.css')}}">
+        <title>Login Options</title>
+    </head>
+    <body>
+       <form method = "POST" action="{{url_for('admin')}}">
+        <!-- viewing the database : display the database -->
+        <!-- deleting a user: ask the user which user they want to delete and delete the user from the database  -->
+        <!-- exiting the admin page: redirect back to the homepage  -->
+        <h1>WHat do you want to do</h1>
+        <input option="option" required>
+       <button type="submit">submit </button>
+<!-- add if statements for what to do based on 'options' vals -->
+            <h1>Whose account do you want to delete?</h1>
+            <input name ="account delete" required>
+            <button type="submit">submit </button>
+       </form>
+</html>
