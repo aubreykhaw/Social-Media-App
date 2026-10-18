@@ -16,6 +16,32 @@ admin_password = "Admin123!"
 
 @app.route("/")
 def home():
+    # add all of the features available from dashboard in main.py
+    # display all the posts
+    # creatin a post 
+    # liking a post 
+    # commenting a post 
+    # edit/delete post
+    global ask_username
+    dashboard = True
+    while dashboard == True:
+        display_posts_function(posts, save_posts)
+        dashboard_options = input("What would you like to do? ")
+        if request.method == "POST":
+            like = request.form["like"]
+            comment = request.form["comment"]
+        if like == True :
+            like_post_function(posts, ask_username, save_posts)
+        if comment == True:
+            creating_post_function(posts, ask_username, save_posts)
+        if dashboard_options == "comment":
+            comment_post_function(posts, ask_username, save_posts)
+        if dashboard_options == "leave":
+            continue
+        if dashboard_options == "delete":
+            delete_post_function(posts, ask_username, save_posts)
+        if dashboard_options == "edit":
+            edit_post_function(posts, ask_username, save_posts) 
     return render_template("dashboard.html")
     
 @app.route("/register", methods=["POST", "GET"])
