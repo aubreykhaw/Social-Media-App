@@ -6,16 +6,19 @@
         <title>Homepage</title>
     </head>
     <body>
-        <form method = "POST" action="{{url_for('dashboard')}}">
-        {% for post in posts}
-        <button type="like">submit </button>
-        <button type="comment">submit </button>
-        <button type="edit">submit</button>
-        <button type="delete">submit</button>
-       {%endif%}
+        
+        {% for post in posts %}
+        <form method = "POST" action="{{url_for('home')}}"
+        <input type = "hidden" name="post_id" value = "{{ loop.index0 }}">
+        <button name="action" type="submit" value="like" >like</button>
+        <button name="action" type="submit" value="comment">comment</button>
+        <button name="action" type="submit" value="edit">edit</button>
+        <button name="action" type="submit" value="delete">delete</button>
+            <p>{{post.username}}</p>
+            <p>{{post.post}}</p>
+            <p>{{post.likes}}</p>
+            <p>{{post.comments}}</p>
+       </form>{%endfor%}
 
-            
-
-        </form>
     </body>
 </html>

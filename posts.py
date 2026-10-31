@@ -15,11 +15,11 @@ def comment_post_function(posts, ask_username, save_posts):
             else:
                 post["comments"] = [{"username": ask_username, "comment": comment}]
                 save_posts(posts)
-def like_post_function(posts, ask_username, save_posts):
-    like_post = input("Which post do you want to like? ")
+def like_post_function(posts, save_posts, like_post):
+    # like_post = input("Which post do you want to like? ")
     for post in posts:
         post_id = posts.index(post)
-        if str(post_id) == like_post:
+        if str(post_id) == str(like_post):
             if "likes" in post:
                 post["likes"] += 1
                 save_posts(posts)

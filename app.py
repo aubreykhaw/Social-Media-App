@@ -14,7 +14,7 @@ database = load_database()
 posts = load_posts()
 admin_password = "Admin123!"
 
-@app.route("/")
+@app.route("/dashboard", methods=["POST", "GET"])
 def home():
     # add all of the features available from dashboard in main.py
     # display all the posts
@@ -23,26 +23,25 @@ def home():
     # commenting a post 
     # edit/delete post
     global ask_username
-    dashboard = True
-    while dashboard == True:
-        display_posts_function(posts, save_posts)
-        dashboard_options = input("What would you like to do? ")
-        if request.method == "POST":
-            like = request.form["like"]
-            comment = request.form["comment"]
-        if like == True :
-            like_post_function(posts, ask_username, save_posts)
-        if comment == True:
-            creating_post_function(posts, ask_username, save_posts)
-        if dashboard_options == "comment":
-            comment_post_function(posts, ask_username, save_posts)
-        if dashboard_options == "leave":
-            continue
-        if dashboard_options == "delete":
+    if request.method == "POST":
+        action = request.form["action"]
+        post_id = request.form["post_id"]
+    
+        if action == "like":
+            # increase the like value for the post by 1
+            # posts is a list of dictionaries 
+            # each post contains a like int, comments list, and post string
+
+            like_post_function(posts, save_posts, post_id)
+            
+        if action == "comment":
+            comment_post_function(posts, ask_username, save_posts) 
+            
+        if action == "delete":
             delete_post_function(posts, ask_username, save_posts)
-        if dashboard_options == "edit":
-            edit_post_function(posts, ask_username, save_posts) 
-    return render_template("dashboard.html")
+        if action == "edit":
+            edit_post_function(posts, ask_username, save_posts)
+    return render_template("dashboard.html", posts=posts)
     
 @app.route("/register", methods=["POST", "GET"])
 def register():
