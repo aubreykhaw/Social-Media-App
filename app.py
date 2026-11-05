@@ -23,6 +23,7 @@ def home():
     # commenting a post 
     # edit/delete post
     global ask_username
+    ask_username = "aubs"
     if request.method == "POST":
         action = request.form["action"]
         post_id = request.form["post_id"]
@@ -31,16 +32,14 @@ def home():
             # increase the like value for the post by 1
             # posts is a list of dictionaries 
             # each post contains a like int, comments list, and post string
-
             like_post_function(posts, save_posts, post_id)
-            
         if action == "comment":
-            comment_post_function(posts, ask_username, save_posts) 
-            
+            comment = request.form["comment"]
+            comment_post_function(posts, ask_username, save_posts, post_id, comment)
         if action == "delete":
-            delete_post_function(posts, ask_username, save_posts)
-        if action == "edit":
-            edit_post_function(posts, ask_username, save_posts)
+            delete_post_function(posts, ask_username, save_posts, post_id)
+        # if action == "edit":
+        #     edit_post_function(posts, ask_username, save_posts, post_id)
     return render_template("dashboard.html", posts=posts)
     
 @app.route("/register", methods=["POST", "GET"])
@@ -110,6 +109,13 @@ def admin():
         delete_account = request.form["account_delete"]
     admin_setting_options_delete_function(database, save_database, delete_account)
     return render_template("admin.html", admin_setting_options= admin_setting_options, database = database, admin_setting_options_delete_function = admin_setting_options_delete_function)
+
+@app.route("/create", methods=["POST", "GET"])
+def create():
+    # all things related to creating a post 
+    ask_username = "aubs"
+    
+    return render_template("create.html")
 
 @app.route("/friends", methods=["POST"])
 def friends():
