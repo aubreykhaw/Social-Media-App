@@ -113,7 +113,19 @@ def admin():
 @app.route("/create", methods=["POST", "GET"])
 def create():
     # all things related to creating a post 
+    # Creating a single post 
+    
+    # "username": whoever is currently signed in (aubs)
+    # "post": content (coming from the html)
+    # "likes": 0 
+    # "comments": [] 
+
     ask_username = "aubs"
+    if request.method == "POST":
+        content = request.form["content"]
+        posts.append({"username": ask_username, "post": content, "likes": 0, "comments": []})
+        save_posts(posts)
+        return render_template("create.html", message="Post created successfully!") 
     
     return render_template("create.html")
 
