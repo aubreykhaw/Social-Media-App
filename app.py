@@ -38,8 +38,12 @@ def home():
             comment_post_function(posts, ask_username, save_posts, post_id, comment)
         if action == "delete":
             delete_post_function(posts, ask_username, save_posts, post_id)
-        # if action == "edit":
-        #     edit_post_function(posts, ask_username, save_posts, post_id)
+        if action == "edit":
+            # take the user to a /edit page -> create the edit.html file or use the existing create.html 
+            # this page should look like the create page 
+            # but with the contents of the current post already filled in
+            # after the user edits the input box, save the new changes into the post list and the json
+            pass
     return render_template("dashboard.html", posts=posts)
     
 @app.route("/register", methods=["POST", "GET"])
@@ -101,7 +105,7 @@ def login():
 
     return render_template("login.html")
 
-@app.route("/admin", methods=["POST"])
+@app.route("/admin", methods=["POST", "GET"])
 def admin():
     global admin_setting_options
     global database
@@ -129,6 +133,19 @@ def create():
     
     return render_template("create.html")
 
+@app.route("/edit", methods=["POST", "GET"])
+def edit():
+    if request.method == "POST":
+        content = request.form["content"]
+        posts.append({"username": "aubs", "post": content, "likes": 0, "comments": []})
+        save_posts(posts)
+        return render_template("edit.html", message="Post edited successfully!")
+
+    return render_template("edit.html", content="", message="")
+    
+
+
+
 @app.route("/friends", methods=["POST"])
 def friends():
     return render_template("friends.html")
@@ -138,4 +155,4 @@ def users():
     return render_template("users.html")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=3000)
