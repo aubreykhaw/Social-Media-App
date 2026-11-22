@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
-
+import uuid
 from authentication import *
 from posts import *
 from friends import *
@@ -12,7 +12,19 @@ Login = False
 Password = False
 database = load_database()
 posts = load_posts()
+for post in posts:
+    if "post_id" not in post:
+        post["post_id"] = str(uuid.uuid4())
+
+save_posts(posts)
 admin_password = "Admin123!"
+
+@app.route("/")
+def index():
+    if Login == True:
+        return redirect(url_for("home"))
+    else:
+        return redirect(url_for("register"))
 
 @app.route("/dashboard", methods=["POST", "GET"])
 def home():
@@ -39,11 +51,7 @@ def home():
         if action == "delete":
             delete_post_function(posts, ask_username, save_posts, post_id)
         if action == "edit":
-            # take the user to a /edit page -> create the edit.html file or use the existing create.html 
-            # this page should look like the create page 
-            # but with the contents of the current post already filled in
-            # after the user edits the input box, save the new changes into the post list and the json
-            pass
+            return redirect(url_for("edit_post", post_id=post_id))
     return render_template("dashboard.html", posts=posts)
     
 @app.route("/register", methods=["POST", "GET"])
@@ -96,6 +104,7 @@ def login():
             if database[username]["password"] == password:
                 Login = True
                 Password = True
+                return redirect(url_for("home"))
             else:
                 Login = False
                 Password = False
@@ -127,21 +136,34 @@ def create():
     ask_username = "aubs"
     if request.method == "POST":
         content = request.form["content"]
-        posts.append({"username": ask_username, "post": content, "likes": 0, "comments": []})
+        posts.append({"username": ask_username, "post": content, "likes": 0, "comments": [], "post_id": str(uuid.uuid4())})
         save_posts(posts)
         return render_template("create.html", message="Post created successfully!") 
     
     return render_template("create.html")
+@app.route("/edit/<post_id>", methods=["GET", "POST"])
+def edit_post(post_id):
+    print(post_id)
+    post = None
 
-@app.route("/edit", methods=["POST", "GET"])
-def edit():
+    for p in posts:
+        if p["post_id"] == post_id:
+            post = p
+            break
+
+    if post is None:
+        return "Post not found"
+
     if request.method == "POST":
-        content = request.form["content"]
-        posts.append({"username": "aubs", "post": content, "likes": 0, "comments": []})
+        post["post"] = request.form["content"]
         save_posts(posts)
-        return render_template("edit.html", message="Post edited successfully!")
+        return redirect(url_for("home"))
 
-    return render_template("edit.html", content="", message="")
+    return render_template(
+        "edit.html",
+        content=post["post"],
+        post_id=post_id
+    )
     
 
 

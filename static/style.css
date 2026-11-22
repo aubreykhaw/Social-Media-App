@@ -1,7 +1,15 @@
+/* Add an image to any of the files -> as practice for adding images/using img tag
+Have two pages with different background colors. 
+Add CSS to the login page -> feel free to do whatever you want in it  
+No LLM usage at this stage, feel free to google for documentation though */
+
 .password {
     color: red;
 }
 
 .username {
     color: red;
+}
+body {
+    background-color: antiquewhite;
 }

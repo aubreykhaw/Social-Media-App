@@ -4,13 +4,19 @@
 </head>
 <body>
     <h1>Edit Post</h1>
-    <form method="post" action="/edit">
+
+    <form method="post" action="/edit/{{ post_id }}">
         <label for="content">Content:</label>
+
         <textarea id="content" name="content" rows="5" cols="30">{{ content }}</textarea>
+
         {% if message %}
             <p>{{ message }}</p>
         {% endif %}
+
         <input type="submit" value="Save">
     </form>
+
 </body>
 </html>
+
